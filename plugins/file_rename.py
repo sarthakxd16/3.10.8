@@ -168,7 +168,7 @@ async def doc(bot, update):
     media = getattr(file, file.media.value)
     c_caption = await digital_botz.get_caption(user_id)
     c_thumb = await digital_botz.get_thumbnail(user_id)
-
+    await ms.edit("`Feating Caption....`")
     if c_caption:
          try:
              # adding custom caption 
@@ -177,7 +177,8 @@ async def doc(bot, update):
              return await ms.edit(text=f"Yᴏᴜʀ Cᴀᴩᴛɪᴏɴ Eʀʀᴏʀ Exᴄᴇᴩᴛ Kᴇyᴡᴏʀᴅ Aʀɢᴜᴍᴇɴᴛ ●> ({e})")             
     else:
          caption = f"**{new_filename}**"
- 
+
+    await ms.edit("`Feating Thumbnail...`")
     if (media.thumbs or c_thumb):
          # downloading thumbnail path
          if c_thumb:
@@ -189,6 +190,8 @@ async def doc(bot, update):
          img.resize((320, 320))
          img.save(ph_path, "JPEG")
 
+
+    await ms.edit("`Uᴩʟᴏᴀᴅɪɴɢ....`")
     type = update.data.split("_")[1]
     if media.file_size > 2000 * 1024 * 1024:
         try:
