@@ -114,18 +114,19 @@ async def doc(bot, update):
     file = update.message.reply_to_message
 
     # file downloaded path
-    file_path = f"Renames/{new_filename}"
+    file_path = f"app/Renames/{new_filename}"
     
     # metadata downloaded path
-    metadata_path = f"Metadata/{new_filename}"
+    metadata_path = f"app/Metadata/{new_filename}"
 	
     ms = await update.message.edit("`Try To Download....`")    
     try:
-        dl_path = await bot.download_media(message=file, file_name=file_path, progress=progress_for_pyrogram, progress_args=("ᴅᴏᴡɴʟᴏᴀᴅ sᴛᴀʀᴛᴇᴅ....", ms, time.time()))    
+        dl_path = await bot.download_media(message=file, progress=progress_for_pyrogram, progress_args=("ᴅᴏᴡɴʟᴏᴀᴅ sᴛᴀʀᴛᴇᴅ....", ms, time.time()))    
         print(dl_path)
     except Exception as e:
      	return await ms.edit(e)
 
+    os.rename(dl_path, file_path)
     metadata_mode = await digital_botz.get_metadata_mode(user_id)
     if (metadata_mode):
         metadata = await digital_botz.get_metadata_code(user_id)
