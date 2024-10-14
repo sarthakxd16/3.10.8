@@ -112,7 +112,8 @@ async def doc(bot, update):
 
     # msg file location 
     file = update.message.reply_to_message
-    file_namr = file.file_name
+    mediac = getattr(file, file.media.value)
+    file_namr = mediac.file_name
 
     # file downloaded path
     file_path = f"Renames/{new_filename}"
