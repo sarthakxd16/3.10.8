@@ -116,7 +116,7 @@ async def doc(bot, update):
     file_namr = mediac.file_name
 
     # file downloaded path
-    file_path = f"app/Renames/{new_filename}"
+    file_path = f"app/downloads/{new_filename}"
     
     # metadata downloaded path
     metadata_path = f"app/Metadata/{new_filename}"
