@@ -23,7 +23,8 @@ from config import Config
 UPLOAD_TEXT = """ᴜᴩʟᴏᴀᴅ sᴛᴀʀᴛᴇᴅ...."""
 app = Client("4gb_FileRenameBot", api_id=Config.API_ID, api_hash=Config.API_HASH, session_string=Config.STRING_SESSION)
 
-async def metadata_editer(input_path, metadata, output_path):
+async def metadata_editer(input_path, metadata, output_directory):
+    output_path = f"{output_directory}/{time.time()}.mp4"
     cmd = [
         'ffmpeg',
         '-i', input_path,
@@ -39,15 +40,13 @@ async def metadata_editer(input_path, metadata, output_path):
     ]
     process = await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
     stdout, stderr = await process.communicate()
-    er = stderr.decode()
-    try:
-        if er:
-            print(er)
-            return None
-    except BaseException:
-        pass
-	    
-    return output_path
+    ert = stderr.decode().strip()
+    trt = stdout.decode().strip()
+    if os.path.lexists(output_path):
+        return output_path
+    else:
+        return None
+	
 		    
     
 	    
@@ -176,7 +175,9 @@ async def doc(bot, update):
         metadata = await digital_botz.get_metadata_code(user_id)
         if metadata:
             await ms.edit("I Fᴏᴜɴᴅ Yᴏᴜʀ Mᴇᴛᴀᴅᴀᴛᴀ\n\n__**Pʟᴇᴀsᴇ Wᴀɪᴛ...**__\n**Aᴅᴅɪɴɢ Mᴇᴛᴀᴅᴀᴛᴀ Tᴏ Fɪʟᴇ....**")
-            await metadata_editer(input_path=file_path, metadata=metadata, output_path=metadata_path)       
+            metadata_path = await metadata_editer(input_path=file_path, metadata=metadata, output_directory=os.path.dirname(os.path.abspath(file_path)))
+            if metadata_path is None:
+                return await ms.edit("I Can't Rename Metadata..")
             await ms.edit("**Metadata added to the file successfully ✅**\n\n**Tʀyɪɴɢ Tᴏ Uᴩʟᴏᴀᴅɪɴɢ....**")
     else:
         await ms.edit("`Tʀʏɪɴɢ Tᴏ Uᴩʟᴏᴀᴅɪɴɢ....`")
