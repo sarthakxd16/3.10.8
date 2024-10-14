@@ -116,23 +116,23 @@ async def doc(bot, update):
     file_namr = mediac.file_name
 
     # file downloaded path
-    file_path = f"app/downloads/{new_filename}"
+    #file_path = f"app/downloads/{new_filename}"
     
     # metadata downloaded path
-    metadata_path = f"app/Metadata/{new_filename}"
+    metadata_path = f"app/downloads/" + "DigitalBotz_MetadataEditer.mp4"
 	
     ms = await update.message.edit("`Try To Download....`")    
     try:
-        dl = f"downloads/{file_namr}"
-        dl_path = await bot.download_media(message=file, progress=progress_for_pyrogram, progress_args=("ᴅᴏᴡɴʟᴏᴀᴅ sᴛᴀʀᴛᴇᴅ....", ms, time.time()))    
-        print(dl_path)
+        #dl = f"downloads/{file_namr}"
+        file_path = await bot.download_media(message=file, file_name=new_filename, progress=progress_for_pyrogram, progress_args=("ᴅᴏᴡɴʟᴏᴀᴅ sᴛᴀʀᴛᴇᴅ....", ms, time.time()))    
+        print(file_path)
     except Exception as e:
      	return await ms.edit(e)
     #os.rename(path, file_path)
-    try:
-        os.rename(dl_path, file_path)
-    except Exception as e:
-     	return await ms.edit(e)
+    #try:
+        #os.rename(dl_path, file_path)
+    #except Exception as e:
+     #	return await ms.edit(e)
     metadata_mode = await digital_botz.get_metadata_mode(user_id)
     if (metadata_mode):
         metadata = await digital_botz.get_metadata_code(user_id)
