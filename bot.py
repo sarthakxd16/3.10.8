@@ -18,9 +18,9 @@ import pyrogram.utils
 pyrogram.utils.MIN_CHANNEL_ID = -1009999999999
 
 # Get logging configurations
-logging.config.fileConfig("logging.conf")
+logging.config.fileConfig('logging.conf')
 logging.getLogger().setLevel(logging.INFO)
-logging.getLogger("cinemagoer").setLevel(logging.ERROR)
+logging.getLogger("pyrogram").setLevel(logging.ERROR)
 
 class Digital_FileRenameBot(Client):
     def __init__(self):
