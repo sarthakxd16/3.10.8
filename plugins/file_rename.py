@@ -22,7 +22,35 @@ from config import Config
 
 UPLOAD_TEXT = """ᴜᴩʟᴏᴀᴅ sᴛᴀʀᴛᴇᴅ...."""
 app = Client("4gb_FileRenameBot", api_id=Config.API_ID, api_hash=Config.API_HASH, session_string=Config.STRING_SESSION)
-   
+
+async def metadata_editer(input_path, metadata, output_path):
+    cmd = [
+        'ffmpeg',
+        '-i', input_path,
+        metadata,
+        '-map', '0:v?',
+        '-map', '0:a?',
+        '-map', '0:s?',
+        '-c:v', 'copy',
+        '-c:a', 'copy',
+        '-c:s', 'copy',
+        output_path,
+        '-y'
+    ]
+    process = await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    stdout, stderr = await process.communicate()
+    er = stderr.decode()
+    try:
+        if er:
+            print(er)
+            return None
+    except BaseException:
+        pass
+	    
+    return output_path
+		    
+    
+	    
 @Client.on_message(filters.private & (filters.document | filters.audio | filters.video))
 async def rename_start(client, message):
     user_id  = message.from_user.id
@@ -148,17 +176,8 @@ async def doc(bot, update):
         metadata = await digital_botz.get_metadata_code(user_id)
         if metadata:
             await ms.edit("I Fᴏᴜɴᴅ Yᴏᴜʀ Mᴇᴛᴀᴅᴀᴛᴀ\n\n__**Pʟᴇᴀsᴇ Wᴀɪᴛ...**__\n**Aᴅᴅɪɴɢ Mᴇᴛᴀᴅᴀᴛᴀ Tᴏ Fɪʟᴇ....**")
-            cmd = f"""ffmpeg -i {file_path} {metadata} {metadata_path}"""
-	    
-            process = await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
-            stdout, stderr = await process.communicate()
-            er = stderr.decode()
-            try:
-                if er:
-                    return await ms.edit(str(er) + "\n\n**Error**")
-            except BaseException:
-                pass
-        await ms.edit("**Metadata added to the file successfully ✅**\n\n**Tʀyɪɴɢ Tᴏ Uᴩʟᴏᴀᴅɪɴɢ....**")
+            await metadata_editer(input_path=file_path, metadata=metadata, output_path=metadata_path)       
+            await ms.edit("**Metadata added to the file successfully ✅**\n\n**Tʀyɪɴɢ Tᴏ Uᴩʟᴏᴀᴅɪɴɢ....**")
     else:
         await ms.edit("`Tʀʏɪɴɢ Tᴏ Uᴩʟᴏᴀᴅɪɴɢ....`")
 	    
