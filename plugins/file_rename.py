@@ -191,6 +191,18 @@ async def doc(bot, update):
          img.save(ph_path, "JPEG")
 
 
+    try:
+        parserx = createParser(metadata_path)
+        metadatax = extractMetadata(parserx)
+        print(metadatax)
+         
+        if metadatax.has("duration"):
+            duration = metadatax.get('duration').seconds
+        print(durationx)
+        parserx.close()
+    except:
+        pass
+	    
     await ms.edit("`Uᴩʟᴏᴀᴅɪɴɢ....`")
     type = update.data.split("_")[1]
     if media.file_size > 2000 * 1024 * 1024:
@@ -265,12 +277,13 @@ async def doc(bot, update):
             elif type == "video":
                 await bot.send_video(
                     update.message.chat.id,
-                    video=metadata_path if metadata_mode else file_path,
+                    video=metadata_path,
                     caption=caption,
                     thumb=ph_path,
                     duration=duration,
                     progress=progress_for_pyrogram,
                     progress_args=(UPLOAD_TEXT, ms, time.time()))
+		    
             elif type == "audio":
                 await bot.send_audio(
                     update.message.chat.id,
@@ -281,6 +294,7 @@ async def doc(bot, update):
                     progress=progress_for_pyrogram,
                     progress_args=(UPLOAD_TEXT, ms, time.time()))
         except Exception as e:
+            print(e)
             if file_path:
                 os.remove(file_path)
             if ph_path:
