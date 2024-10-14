@@ -133,6 +133,15 @@ async def doc(bot, update):
         #os.rename(dl_path, file_path)
     #except Exception as e:
      #	return await ms.edit(e)
+    duration = 0
+    try:
+        parser = createParser(file_path)
+        metadata = extractMetadata(parser)
+        if metadata.has("duration"):
+            duration = metadata.get('duration').seconds
+        parser.close()
+    except:
+        pass
     metadata_mode = await digital_botz.get_metadata_mode(user_id)
     if (metadata_mode):
         metadata = await digital_botz.get_metadata_code(user_id)
@@ -152,15 +161,7 @@ async def doc(bot, update):
     else:
         await ms.edit("`Tʀʏɪɴɢ Tᴏ Uᴩʟᴏᴀᴅɪɴɢ....`")
 	    
-    duration = 0
-    try:
-        parser = createParser(file_path)
-        metadata = extractMetadata(parser)
-        if metadata.has("duration"):
-            duration = metadata.get('duration').seconds
-        parser.close()
-    except:
-        pass
+    
 	    
     ph_path = None
     media = getattr(file, file.media.value)
