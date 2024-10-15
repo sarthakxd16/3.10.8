@@ -28,7 +28,7 @@ async def metadata_editer(input_path, metadata, output_directory):
     cmd = [
         'ffmpeg',
         '-i', input_path,
-        metadata,
+        f'{metadata}',
         '-map', '0:v?',
         '-map', '0:a?',
         '-map', '0:s?',
@@ -42,9 +42,15 @@ async def metadata_editer(input_path, metadata, output_directory):
     stdout, stderr = await process.communicate()
     ert = stderr.decode().strip()
     trt = stdout.decode().strip()
+	
+    if process.returncode != 0:
+        Print(f"Error: {stderr.decode('utf-8')}")
+	    
     if os.path.lexists(output_path):
         return output_path
+        print(output_path)
     else:
+        print(None)
         return None
 	
 		    
