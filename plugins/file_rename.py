@@ -25,7 +25,7 @@ app = Client("4gb_FileRenameBot", api_id=Config.API_ID, api_hash=Config.API_HASH
 
 async def metadata_editer(input_path, metadata, output_directory):
     output_path = f"{output_directory}/{time.time()}.mp4"
-    cmd = f"ffmpeg -map 0 -i {input_path} {metadata} -c:v copy -c:a copy -c:s copy {output_path}"
+    cmd = f"ffmpeg -map 0 -i {input_path} {metadata} -c:v copy -c:a copy -c:s copy {output_path} -y"
     
     process = await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
     stdout, stderr = await process.communicate()
@@ -141,7 +141,7 @@ async def doc(bot, update):
     #file_path = f"app/downloads/{new_filename}"
     
     # metadata downloaded path
-    metadata_path = f"app/downloads/" + "DigitalBotz_MetadataEditer.mp4"
+    #metadata_path = f"app/downloads/" + "DigitalBotz_MetadataEditer.mp4"
 	
     ms = await update.message.edit("`Try To Download....`")    
     try:
