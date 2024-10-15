@@ -181,7 +181,10 @@ async def doc(bot, update):
         metadata = await digital_botz.get_metadata_code(user_id)
         if metadata:
             await ms.edit("I Fᴏᴜɴᴅ Yᴏᴜʀ Mᴇᴛᴀᴅᴀᴛᴀ\n\n__**Pʟᴇᴀsᴇ Wᴀɪᴛ...**__\n**Aᴅᴅɪɴɢ Mᴇᴛᴀᴅᴀᴛᴀ Tᴏ Fɪʟᴇ....**")
-            metadata_path = await metadata_editer(input_path=file_path, metadata=metadata, output_directory=os.path.dirname(os.path.abspath(file_path)))
+            try:
+                metadata_path = await metadata_editer(input_path=file_path, metadata=metadata, output_directory=os.path.dirname(os.path.abspath(file_path)))
+            except Exception as e:
+                print(e)
             if metadata_path is None:
                 return await ms.edit("I Can't Rename Metadata..")
             await ms.edit("**Metadata added to the file successfully ✅**\n\n**Tʀyɪɴɢ Tᴏ Uᴩʟᴏᴀᴅɪɴɢ....**")
